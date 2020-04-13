@@ -50,6 +50,15 @@ define([
 
         itemDataStart = new Date(item.get("start").dateTime);
         itemDataEnd = new Date(item.get("end").dateTime);
+
+        if (item.get("attendees") == undefined) {
+          return;
+        }
+        const found = item.get("attendees").find(element => element.self != undefined && element.self == true && element.responseStatus == "accepted");
+        if (!found) {
+          return;
+        }
+
         if (itemDataStart > start && itemDataEnd < end) {
           diff = new Date(item.get("end").dateTime) - new Date(item.get("start").dateTime);
           hours = diff/1000/60/60;
